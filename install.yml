@@ -1,0 +1,69 @@
+---
+- name: bootstrap nginx setup for UBUNTU servers
+  hosts: ubuntu_docker
+  remote_user: ansible_user
+
+  tasks:
+  - name: ensure wget is installed 
+    apt:
+      name: wget
+      state: present
+      update_cache: true
+    become: true
+
+  - name: ensure git is installed 
+    apt: 
+      name: git
+      state: present
+      update_cache: true
+    become: true
+
+  - name: install nginx 
+    apt:
+      name: nginx 
+
+      state: present
+      update_cache: true
+    become: true
+
+  - name: install mariadb-server
+    apt:
+      name:
+         - mariadb-server
+         - mariadb-client
+      state: present
+      update_cache: true
+    become: true
+
+  - name: install PHP & components
+    apt:
+      name: 
+         - php7.4
+         - php7.4-fpm
+         - php7.4-mysql
+         - php-common
+         - php7.4-cli
+         - php7.4-common
+         - php7.4-json
+         - php7.4-opcache
+         - php7.4-readline
+         - php7.4-mbstring
+         - php7.4-xml
+         - php7.4-gd
+         - php7.4-curl
+      state: present
+      update_cache: true
+    become: true
+  
+  - name: Start Nginx service, if not started
+    service:
+          name: nginx.service
+          state: started
+  - name: Start MariaDB service, if not started
+    service:
+          name: mariadb.service
+          state: started
+  - name: Start Php7.4 service, if not started
+    service:
+          name: php7.4-fpm
+          state: started
